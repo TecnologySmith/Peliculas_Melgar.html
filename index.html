@@ -169,7 +169,7 @@
       .then(res => res.text())
       .then(data => {
         const json = JSON.parse(data.substr(47).slice(0, -2));
-        const rows = json.table.rows;
+        const rows = json.table.rows.reverse();
 
         const container = document.getElementById("cardsContainer");
         container.innerHTML = "";
@@ -189,8 +189,8 @@
             <h3>${nombre}</h3>
             <p><strong>🎭 Género:</strong> ${genero}</p>
             <p><strong>📢 Mensaje:</strong> ${mensaje}</p>
-            <div class="call-to-action">🎯 ¡Disfruta ya esta película en nuestro canal!</div>
-            <a href="${enlace}" target="_blank">🔗 Ver canal</a>
+            <div class="call-to-action">🎯 ¡Disfruta ya esta película clic aquí!</div>
+            <a href="${enlace}" target="_blank">🔗 Ver pelicula</a>
           `;
           container.appendChild(card);
         });
