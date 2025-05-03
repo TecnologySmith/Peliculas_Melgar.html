@@ -21,6 +21,18 @@
       text-shadow: 2px 2px #000;
     }
 
+    #visitorInfo {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      background-color: #1f1f1f;
+      border: 1px solid #ffcc00;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+    }
+
     .promo {
       background-color: #1f1f1f;
       border: 2px solid #ffcc00;
@@ -102,32 +114,20 @@
       font-weight: bold;
       margin-top: 10px;
     }
-
-    #visitorInfo {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      background-color: #1e1e1e;
-      color: #ffcc00;
-      padding: 10px 15px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
-      font-size: 0.95em;
-      z-index: 1000;
-      max-width: 250px;
-      text-align: left;
-    }
   </style>
 </head>
 <body>
 
-  <div id="visitorInfo">👀 Cargando visitas...</div>
+  <div id="visitorInfo">
+    👋 Visitantes de esta página:<br>
+    <img src="https://www.freecounterstat.com/count/3z0h" alt="Visitas">
+  </div>
 
   <h1>🎬 Películas Melgar By Mr. Smith</h1>
 
   <div class="promo">
     <p><strong>🎉 ¿Quieres comprar pantalla de streaming?</strong><br>
-    Adquiere pantallas de plataformas como Netflix, Disney, Amazon, Max, Crunchyroll y muchas más.</p>
+    Adquiere pantallas de plataformas como Netflix, Disney, Amazon, Max, Crunchyroll y muchas mas.</p>
     <a class="button" href="https://wa.me/+573222117202?text=Hola,%20vengo%20de%20la%20pagina%20Peliculas%20Melgar%20By%20Mr%20Smith%20y%20quiero%20comprar%20una%20pantalla" target="_blank">Más info aquí</a>
   </div>
 
@@ -138,8 +138,8 @@
   <div id="cardsContainer">Cargando películas...</div>
 
   <div class="promo">
-    <p><strong>🚀 ¿Quieres comprar pantalla de streaming?</strong><br>
-        Adquiere pantallas de plataformas como Netflix, Disney, Amazon, Max, Crunchyroll y muchas más.</p>
+    <p><strong>🚀 ¿Quieres comprar pantalla de streaming?.</strong><br>
+        Adquiere pantallas de plataformas como Netflix, Disney, Amazon, Max, Crunchyroll y muchas mas.</p>
     <a class="button" href="https://wa.me/+573222117202?text=Hola,%20vengo%20de%20la%20pagina%20Peliculas%20Melgar%20By%20Mr%20Smith%20y%20quiero%20comprar%20una%20pantalla" target="_blank">Más info aquí</a>
   </div>
 
@@ -189,30 +189,6 @@
         const text = card.innerText.toLowerCase();
         card.style.display = text.includes(input) ? "inline-block" : "none";
       });
-    }
-
-    // Contador de visitas y país
-    if (!localStorage.getItem("visitCounted")) {
-      fetch("https://ipinfo.io/json?token=tu_token_aqui") // Reemplaza con tu token de IPinfo
-        .then(response => response.json())
-        .then(data => {
-          const country = data.country || "desconocido";
-          let visits = parseInt(localStorage.getItem("visitsTotal") || "0");
-          visits += 1;
-          localStorage.setItem("visitsTotal", visits);
-          localStorage.setItem("visitCounted", "true");
-
-          document.getElementById("visitorInfo").innerHTML =
-            `👋 Visitante desde <strong>${country}</strong><br>🔢 Visitas (este navegador): <strong>${visits}</strong>`;
-        })
-        .catch(err => {
-          console.error("Error al obtener datos de IP:", err);
-          document.getElementById("visitorInfo").innerText = "🌍 Visitante (país desconocido)";
-        });
-    } else {
-      const visits = localStorage.getItem("visitsTotal") || "1";
-      document.getElementById("visitorInfo").innerHTML =
-        `🔁 Visitante recurrente<br>🔢 Visitas (este navegador): <strong>${visits}</strong>`;
     }
   </script>
 
