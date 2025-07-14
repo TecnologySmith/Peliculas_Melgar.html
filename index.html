@@ -135,6 +135,7 @@
         padding: 6px 8px;
       }
     }
+    
   </style>
 </head>
 <body>
@@ -151,7 +152,7 @@
     <nav>
     <a href="https://tecnologysmith.github.io/plataformas/">Comprar Plataformas</a>
     <a href="#productos">Productos</a>
-    <a href="#contacto">Contacto</a>
+    <a href="#" onclick="mostrarWhatsapp()">Contacto</a>
   </nav>
 
     <div class="promo">
@@ -230,6 +231,9 @@
 
       document.getElementById("noResultsMessage").style.display = matches === 0 ? "block" : "none";
     }
+    function mostrarWhatsapp() {
+    alert("Escríbenos a nuestro WhatsApp: +57 322 211 7202");
+  }
   </script>
 
 </body>
