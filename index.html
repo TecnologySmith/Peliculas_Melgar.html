@@ -188,4 +188,71 @@
   <div id="noResultsMessage" style="display:none; max-width:600px; margin:20px auto; background-color:#330000; color:#fff; border:2px solid #ff0000; padding:15px; border-radius:10px;">
     <p><strong>❌ No se encontraron resultados.</strong></p>
     <p>Como sugerencia, primero busca la película en Google y valida que el nombre esté correcto. Si aún así no aparece, puedes escribirme aquí:</p>
-    <a class="button" href="https://wa.me/+573222117202?text=Hola,%20vengo%20de%20la%20pagina%20Peliculas%20Melgar%20By%20Mr%20Smith%20y%20no%20encuentro%20una%20película" target="_blank">Escribirme p_
+    <a class="button" href="https://wa.me/+573222117202?text=Hola,%20vengo%20de%20la%20pagina%20Peliculas%20Melgar%20By%20Mr%20Smith%20y%20no%20encuentro%20una%20película" target="_blank">Escribirme por WhatsApp</a>
+  </div>
+
+  <div class="promo">
+    <p><strong>🚀 ¿Quieres comprar pantalla de streaming?.</strong><br>
+    Adquiere pantallas de plataformas como Netflix, Disney, Amazon, Max, Crunchyroll y muchas más.</p>
+    <a class="button" href="https://wa.me/+573222117202?text=Hola,%20vengo%20de%20la%20pagina%20Peliculas%20Melgar%20By%20Mr%20Smith%20y%20quiero%20comprar%20una%20pantalla" target="_blank">Más info aquí</a>
+  </div>
+
+  <script>
+    const url = "https://docs.google.com/spreadsheets/d/1_cQK1aAJh7LWCubb_9IUnBQvieHUA-0k/gviz/tq?tqx=out:json";
+
+    fetch(url)
+      .then(res => res.text())
+      .then(data => {
+        const json = JSON.parse(data.substr(47).slice(0, -2));
+        const rows = json.table.rows.reverse();
+
+        const container = document.getElementById("cardsContainer");
+        container.innerHTML = "";
+        rows.forEach(row => {
+          const nombre = row.c[0]?.v || "";
+          const enlace = row.c[1]?.v || "";
+          const genero = row.c[2]?.v || "";
+          const imagen = row.c[3]?.v || "";
+          const mensaje = row.c[4]?.v || "";
+
+          if (!nombre || !enlace) return;
+
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `
+            <img src="${imagen}" alt="Imagen de portada">
+            <h3>${nombre}</h3>
+            <p><strong>🎭 Género:</strong> ${genero}</p>
+            <p><strong>📢 Mensaje:</strong> ${mensaje}</p>
+            <div class="call-to-action">🎯 ¡Disfruta ya esta película clic aquí!</div>
+            <a href="${enlace}" target="_blank">🔗 Ver película</a>
+          `;
+          container.appendChild(card);
+        });
+      })
+      .catch(err => {
+        document.getElementById("cardsContainer").innerHTML = "❌ Error al cargar los datos.";
+        console.error("Error al cargar datos de Google Sheets:", err);
+      });
+
+    function filterCards() {
+      const input = document.getElementById("searchInput").value.toLowerCase();
+      const cards = document.querySelectorAll(".card");
+      let matches = 0;
+
+      cards.forEach(card => {
+        const text = card.innerText.toLowerCase();
+        const match = text.includes(input);
+        card.style.display = match ? "inline-block" : "none";
+        if (match) matches++;
+      });
+
+      document.getElementById("noResultsMessage").style.display = matches === 0 ? "block" : "none";
+    }
+    function mostrarWhatsapp() {
+    alert("Escríbenos a nuestro WhatsApp: +57 322 211 7202");
+  }
+  </script>
+
+</body>
+</html>
