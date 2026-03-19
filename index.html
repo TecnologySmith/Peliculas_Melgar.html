@@ -2,341 +2,433 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Películas Melgar</title>
+  <title>Películas Melgar | Catálogo Premium</title>
   <link rel="icon" href="https://i.ibb.co/zh4wsrFc/DALL-E-2025-03-25-16-39-10-A-professional-and-modern-logo-for-Pel-culas-Melgar-with-a-futuristic-and.webp" type="image/png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    :root {
+      --primary: #ffcc00;
+      --dark: #121212;
+      --card-bg: #1e1e1e;
+      --text: #ffffff;
+      --hover-bg: #2a2a2a;
+    }
+
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #121212;
-      color: #fff;
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--dark);
+      color: var(--text);
       margin: 0;
-      padding: 20px;
+      padding: 0;
       text-align: center;
     }
 
+    /* --- NAVEGACIÓN PROFESIONAL (Glassmorphism) --- */
     nav {
-      background-color: #444;
+      background-color: rgba(30, 30, 30, 0.95);
+      backdrop-filter: blur(10px);
       display: flex;
+      flex-wrap: wrap;
       justify-content: center;
-      gap: 2rem;
-      padding: 0.5rem 0;
+      gap: 15px;
+      padding: 15px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid var(--primary);
     }
 
     nav a {
-      color: white;
+      color: var(--text);
       text-decoration: none;
-      font-weight: bold;
+      font-weight: 600;
+      font-size: 0.9em;
+      padding: 8px 15px;
+      border-radius: 5px;
+      transition: all 0.3s;
+      border: 1px solid transparent;
+    }
+
+    nav a:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+      background: rgba(255, 204, 0, 0.1);
     }
 
     h1 {
-      font-size: 2em;
-      margin: 80px 0 10px;
-      color: #ffcc00;
+      font-size: 2.5em;
+      margin: 40px 0 20px;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 2px;
       text-shadow: 2px 2px #000;
     }
 
-    .promo {
-      background-color: #1f1f1f;
-      border: 2px solid #ffcc00;
-      border-radius: 10px;
-      padding: 15px;
-      margin: 20px auto;
-      max-width: 600px;
-      font-size: 1.1em;
-      box-shadow: 0 0 10px #ffcc00;
-    }
-
-    .promo strong {
-      color: #ffcc00;
-    }
-
-    .promo a.button {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 10px 20px;
-      background-color: #ffcc00;
-      color: #000;
-      font-weight: bold;
-      border-radius: 6px;
-      text-decoration: none;
-      transition: background-color 0.3s;
-    }
-
-    .promo a.button:hover {
-      background-color: #e6b800;
-    }
-
-    .search-container {
-      margin-bottom: 20px;
-    }
-
-    #searchInput {
-      width: 50%;
-      padding: 12px;
-      font-size: 16px;
-      border: none;
-      border-radius: 5px;
-      outline: none;
-    }
-
-    #searchButton {
-      padding: 12px 20px;
-      font-size: 16px;
-      border: none;
-      border-radius: 5px;
-      margin-left: 10px;
-      background-color: #ffcc00;
-      color: #000;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    #searchButton:hover {
-      background-color: #e6b800;
+    /* --- CONTENEDOR DE TARJETAS (GRID) --- */
+    #cardsContainer {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 25px;
+      padding: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
     }
 
     .card {
-      position: relative;
-      background-color: #1e1e1e;
-      border-radius: 10px;
-      padding: 15px;
-      margin: 15px;
-      width: 300px;
-      box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
-      display: inline-block;
-      vertical-align: top;
+      background-color: var(--card-bg);
+      border-radius: 15px;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid rgba(255, 204, 0, 0.1);
+      position: relative; /* Importante para el tooltip */
     }
 
-    .card img {
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(255, 204, 0, 0.2);
+    }
+
+    /* --- CONTENEDOR DE IMAGEN Y TOOLTIP REINTEGRADO --- */
+    .card-img-container {
+      position: relative;
       width: 100%;
-      border-radius: 10px;
-      cursor: pointer;
-      display: block;
+      padding-top: 140%; /* Relación póster */
+      overflow: hidden;
+      cursor: help; /* Indica que hay info al pasar */
     }
 
-    /* Tooltip centrado sobre la imagen */
-    .tooltip {
+    .card-img-container img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover .card-img-container img {
+      transform: scale(1.05); /* Ligero zoom al pasar el cursor */
+    }
+
+    /* ✅ REINTEGRACIÓN DEL TOOLTIP (Descripción al hacer hover) */
+    .tooltip-modern {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background-color: rgba(0, 0, 0, 0.85);
-      color: #fff;
-      border: 1px solid #ffcc00;
-      border-radius: 8px;
-      padding: 12px;
-      width: 85%;
-      z-index: 100;
-      font-size: 14px;
+      background-color: rgba(0, 0, 0, 0.9);
+      color: var(--primary);
+      border: 1px solid var(--primary);
+      border-radius: 10px;
+      padding: 15px;
+      width: 80%;
+      font-size: 13px;
       text-align: center;
-      opacity: 0;
+      opacity: 0; /* Oculto por defecto */
       transition: opacity 0.4s ease-in-out;
-      pointer-events: none;
+      pointer-events: none; /* No interfiere con el clic */
+      z-index: 10;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
     }
 
-    .card:hover .tooltip {
-      opacity: 1;
+    .card:hover .tooltip-modern {
+      opacity: 1; /* Visible al hacer hover en la tarjeta */
+    }
+
+    .card-content {
+      padding: 15px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      text-align: left;
     }
 
     .card h3 {
-      margin: 10px 0 5px;
-      color: #ffcc00;
+      margin: 5px 0 10px;
+      color: var(--primary);
+      font-size: 1.1em;
+      min-height: 2.2em; /* Reserva espacio para 2 líneas */
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     .card p {
-      margin: 5px 0;
+      font-size: 0.9em;
+      color: #bbb;
+      margin: 4px 0;
     }
 
-    /* 🔥 BOTÓN "Ver Película" */
+    .card strong { color: var(--text); }
+
     .ver-btn {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 12px 25px;
-      background-color: #ffcc00;
+      display: block;
+      margin: 15px;
+      padding: 12px;
+      background-color: var(--primary);
       color: #000;
       font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
       text-decoration: none;
-      box-shadow: 0 0 20px rgba(255, 204, 0, 0.7);
-      transition: all 0.3s ease;
+      border-radius: 8px;
+      transition: 0.3s;
+      font-size: 0.9em;
     }
 
     .ver-btn:hover {
       background-color: #e6b800;
-      box-shadow: 0 0 30px rgba(255, 255, 0, 1);
-      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(255, 204, 0, 0.7);
     }
 
-    .call-to-action {
-      color: #ffcc00;
-      font-weight: bold;
-      margin-top: 10px;
+    /* --- BUSCADOR CON AUTOCOMPLETADO (Ajustado) --- */
+    .search-wrapper {
+      margin: 30px auto;
+      max-width: 600px;
+      padding: 0 20px;
+      position: relative; /* Para posicionar los resultados */
     }
 
-    .visit-counter {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      background-color: #1f1f1f;
-      border: 2px solid #ffcc00;
+    .search-container {
+      display: flex;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
       border-radius: 10px;
-      padding: 8px 12px;
+      overflow: hidden;
+    }
+
+    #searchInput {
+      flex-grow: 1;
+      padding: 15px;
+      border: none;
+      font-size: 16px;
+      background-color: rgba(255,255,255,0.9);
+      color: #000;
+    }
+
+    #searchInput:focus { outline: 2px solid var(--primary); }
+
+    #searchButton {
+      padding: 0 25px;
+      border: none;
+      background-color: var(--primary);
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    #searchButton:hover { background-color: #e6b800; }
+
+    /* ✅ ESTILOS DEL AUTOCOMPLETADO */
+    #autocompleteResults {
+      position: absolute;
+      top: 100%;
+      left: 20px; /* Alineado con el padding de search-wrapper */
+      right: 20px;
+      background-color: rgba(255, 255, 255, 0.98);
+      color: #000;
+      border-radius: 0 0 10px 10px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+      z-index: 1001; /* Sobre el nav si es necesario */
+      display: none; /* Oculto por defecto */
+      max-height: 250px;
+      overflow-y: auto; /* Scroll si hay muchas sugerencias */
+      border: 1px solid var(--primary);
+      border-top: none;
+    }
+
+    #autocompleteResults ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    #autocompleteResults li {
+      padding: 12px 20px;
+      cursor: pointer;
       font-size: 14px;
-      color: #fff;
-      box-shadow: 0 0 10px #ffcc00;
-      z-index: 999;
-      text-align: center;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
     }
 
-    .visit-counter img {
-      margin-top: 5px;
-      max-width: 100%;
+    #autocompleteResults li:last-child { border-bottom: none; }
+
+    #autocompleteResults li:hover,
+    #autocompleteResults li.active {
+      background-color: var(--primary);
+      color: #000;
+      font-weight: bold;
     }
 
-    @media (max-width: 600px) {
-      .visit-counter {
-        top: 5px;
-        right: 5px;
-        font-size: 12px;
-        padding: 6px 8px;
-      }
-      .tooltip {
-        width: 90%;
-        font-size: 13px;
-      }
+    @media (max-width: 768px) {
+      h1 { font-size: 1.8em; margin: 20px 0; }
+      nav { gap: 8px; padding: 10px; }
+      nav a { font-size: 0.8em; padding: 6px 8px; }
+      .search-container { border-radius: 10px; }
+      #autocompleteResults { left: 20px; right: 20px; }
+      .tooltip-modern { width: 90%; font-size: 12px; padding: 10px; }
     }
   </style>
 </head>
 <body>
 
-  <div class="visit-counter">
-    👋 <strong>Visitantes de esta página:</strong><br>
-    <a href="https://www.hitwebcounter.com" target="_blank">
-      <img src="https://hitwebcounter.com/counter/counter.php?page=20560658&style=0036&nbdigits=5&type=page&initCount=0" title="Counter Widget" alt="Visit counter For Websites" border="0" />
-    </a>
-  </div>
-
-  <h1>🎬 Películas Melgar By Mr. Smith</h1>
-
   <nav>
-  <a href="https://tecnologysmith.github.io/TecnologySmithStore/" 
-     target="_blank" 
-     rel="noopener noreferrer">
-    $ TECNOLOGYSMITH STORE $
-  </a>
-  <a href="https://tecnologysmith.github.io/plataformas.html/" 
-     target="_blank" 
-     rel="noopener noreferrer">
-     Comprar Netflix, Disney, Amazon y más
-  </a>
-  
-  <a href="https://tecnologysmith.github.io/pagina_web_gratis_2/" 
-     target="_blank" 
-     rel="noopener noreferrer">
-     Solicita tu página Web (gratis)
-  </a>
-  
-  <a href="https://wa.me/573222117202?text=Vengo%20de%20la%20p%C3%A1gina%20Pel%C3%ADculas%20Melgar%20y%20quiero%20m%C3%A1s%20informaci%C3%B3n" 
-     target="_blank" 
-     rel="noopener noreferrer">
-     Contacto
-  </a>
-</nav>
+    <a href="https://tecnologysmith.github.io/TecnologySmithStore/" target="_blank">STORE</a>
+    <a href="https://tecnologysmith.github.io/plataformas.html/" target="_blank">PLATAFORMAS</a>
+    <a href="https://tecnologysmith.github.io/pagina_web_gratis_2/" target="_blank">WEB GRATIS</a>
+    <a href="https://wa.me/573222117202" target="_blank">CONTACTO</a>
+  </nav>
 
+  <h1>🎬 Películas Melgar</h1>
 
-  <div class="promo">
-    <p><strong>🌟 Únete al grupo de miembros premium de Películas Melgar</strong><br>
-    Aquí encontrarás películas y series de todas las plataformas de streaming como Netflix, Disney+, Max, Amazon Prime y más. ¡Todo en un solo lugar y a un precio incomparable!</p>
-    <a class="button" href="https://wa.me/+573222117202?text=Hola,%20vengo%20de%20la%20pagina%20Peliculas%20Melgar%20By%20Mr%20Smith%20y%20quiero%20ser%20miembro%20premium" target="_blank">Más información aquí</a>
+  <div class="search-wrapper">
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="Buscar por nombre o género..." autocomplete="off">
+      <button id="searchButton" onclick="filterCards()">BUSCAR</button>
+    </div>
+    <div id="autocompleteResults"></div>
   </div>
 
-  <div class="search-container">
-    <input type="text" id="searchInput" placeholder="🔍 Buscar películas por nombre o género...">
-    <button id="searchButton" onclick="filterCards()">Buscar</button>
-  </div>
+  <div id="cardsContainer">Cargando catálogo premium...</div>
 
-  <div id="cardsContainer">Cargando películas...</div>
-
-  <div id="noResultsMessage" style="display:none; max-width:600px; margin:20px auto; background-color:#330000; color:#fff; border:2px solid #ff0000; padding:15px; border-radius:10px;">
-    <p><strong>❌ No se encontraron resultados.</strong></p>
-    <p>Como sugerencia, primero busca la película en Google y valida que el nombre esté correcto. Si aún así no aparece, puedes escribirme aquí:</p>
-    <a class="button" href="https://wa.me/+573222117202?text=Hola,%20vengo%20de%20la%20pagina%20Peliculas%20Melgar%20By%20Mr%20Smith%20y%20no%20encuentro%20una%20película" target="_blank">Escribirme por WhatsApp</a>
-  </div>
-
-  <div class="promo">
-    <p><strong>🚀 ¿Quieres comprar pantalla de streaming?</strong><br>
-    Adquiere pantallas de plataformas como Netflix, Disney, Amazon, Max, Crunchyroll y muchas más.</p>
-    <a class="button" href="https://wa.me/+573222117202?text=Hola,%20vengo%20de%20la%20pagina%20Peliculas%20Melgar%20By%20Mr%20Smith%20y%20quiero%20comprar%20una%20pantalla" target="_blank">Más info aquí</a>
+  <div id="noResultsMessage" style="display:none; color: #ff4444; margin: 40px; background: rgba(255,0,0,0.1); padding: 20px; border-radius: 10px; border: 1px solid #ff4444;">
+    <h3>❌ Película no encontrada</h3>
+    <p>Revisa la ortografía o intenta buscar una palabra clave.</p>
+    <a href="https://wa.me/+573222117202" style="color: var(--primary); font-weight: bold; text-decoration: none;">Solicítala por WhatsApp aquí</a>
   </div>
 
   <script>
     const url = "https://docs.google.com/spreadsheets/d/1_cQK1aAJh7LWCubb_9IUnBQvieHUA-0k/gviz/tq?tqx=out:json";
+    let allMoviesData = []; // Variable global para guardar los datos
 
-    fetch(url)
-      .then(res => res.text())
-      .then(data => {
-        const json = JSON.parse(data.substr(47).slice(0, -2));
-        const rows = json.table.rows.reverse();
+    // 1. Cargar Datos Iniciales
+    async function fetchData() {
+      try {
+        const res = await fetch(url);
+        const text = await res.text();
+        const json = JSON.parse(text.substr(47).slice(0, -2));
+        const rows = json.table.rows.reverse(); // Últimas agregadas primero
 
         const container = document.getElementById("cardsContainer");
         container.innerHTML = "";
+
         rows.forEach(row => {
           const nombre = row.c[0]?.v || "";
           const enlace = row.c[6]?.v || "";
           const genero = row.c[2]?.v || "";
           const imagen = row.c[3]?.v || "";
           const mensaje = row.c[4]?.v || "";
-          const info = row.c[5]?.v || "";
+          const info = row.c[5]?.v || "Ver detalles..."; // Columna de descripción
 
           if (!nombre || !enlace) return;
+
+          // Guardamos en la variable global para el autocompletado
+          allMoviesData.push({ nombre: nombre.toString(), genero: genero.toString() });
 
           const card = document.createElement("div");
           card.className = "card";
           card.innerHTML = `
-            <img src="${imagen}" alt="Imagen de portada">
-            <div class="tooltip">${info}</div>
-            <h3>${nombre}</h3>
-            <p><strong>🎭 Género:</strong> ${genero}</p>
-            <p><strong>📢 Mensaje:</strong> ${mensaje}</p>
-            <div class="call-to-action">🎯 ¡Disfruta ya esta película clic aquí!</div>
+            <div class="card-img-container">
+                <img src="${imagen}" alt="${nombre}" onerror="this.src='https://via.placeholder.com/300x450?text=No+Image'">
+                <div class="tooltip-modern"><strong>Descripción:</strong><br>${info}</div>
+            </div>
+            <div class="card-content">
+                <h3>${nombre}</h3>
+                <p><strong>🎭 Género:</strong> ${genero}</p>
+                <p><strong>📢</strong> ${mensaje}</p>
+            </div>
             <a href="${enlace}" class="ver-btn" target="_blank">🎬 Ver Película</a>
           `;
           container.appendChild(card);
         });
-      })
-      .catch(err => {
-        document.getElementById("cardsContainer").innerHTML = "❌ Error al cargar los datos.";
-        console.error("Error al cargar datos de Google Sheets:", err);
-      });
 
-    function filterCards() {
-      const input = document.getElementById("searchInput").value.toLowerCase();
+        setupAutocomplete(); // Iniciar autocompletado después de cargar datos
+
+      } catch (err) {
+        console.error("Error al cargar datos:", err);
+        document.getElementById("cardsContainer").innerHTML = "<h3>❌ Error al cargar el catálogo. Intente más tarde.</h3>";
+      }
+    }
+
+    // 2. Función Principal de Filtrado (Mejorada para ocultar autocompletado)
+    function filterCards(searchTerm = null) {
+      const input = searchTerm || document.getElementById("searchInput").value.toLowerCase();
       const cards = document.querySelectorAll(".card");
       let matches = 0;
 
       cards.forEach(card => {
-        const text = card.innerText.toLowerCase();
-        const match = text.includes(input);
-        card.style.display = match ? "inline-block" : "none";
-        if (match) matches++;
+        // Buscamos solo en el H3 (título) y P (género) para más precisión
+        const title = card.querySelector('h3').innerText.toLowerCase();
+        const genre = card.querySelector('p').innerText.toLowerCase();
+        const isMatch = title.includes(input) || genre.includes(input);
+
+        card.style.display = isMatch ? "flex" : "none";
+        if (isMatch) matches++;
       });
 
       document.getElementById("noResultsMessage").style.display = matches === 0 ? "block" : "none";
+      document.getElementById("autocompleteResults").style.display = "none"; // Ocultar sugerencias
     }
 
-    function mostrarWhatsapp() {
-      alert("Escríbenos a nuestro WhatsApp: +57 322 211 7202");
+    // ✅ 3. Lógica del Sistema de Autocompletado
+    function setupAutocomplete() {
+      const searchInput = document.getElementById("searchInput");
+      const resultsContainer = document.getElementById("autocompleteResults");
+
+      searchInput.addEventListener("input", function() {
+        const value = this.value.toLowerCase().trim();
+        resultsContainer.innerHTML = ""; // Limpiar resultados previos
+
+        if (value.length < 2) {
+          resultsContainer.style.display = "none";
+          return;
+        }
+
+        // Filtrar solo nombres que coincidan
+        const suggestions = allMoviesData
+          .filter(movie => movie.nombre.toLowerCase().includes(value))
+          .slice(0, 10); // Limitar a 10 sugerencias para rendimiento
+
+        if (suggestions.length === 0) {
+          resultsContainer.style.display = "none";
+          return;
+        }
+
+        const ul = document.createElement("ul");
+        suggestions.forEach(suggestion => {
+          const li = document.createElement("li");
+          // Resaltar la parte que coincide
+          const regex = new RegExp(`(${value})`, 'gi');
+          const highlightedName = suggestion.nombre.replace(regex, "<strong>$1</strong>");
+          
+          li.innerHTML = `🎬 ${highlightedName}`;
+          
+          li.addEventListener("click", function() {
+            searchInput.value = suggestion.nombre; // Llenar buscador
+            filterCards(suggestion.nombre.toLowerCase()); // Filtrar directamente
+            resultsContainer.style.display = "none"; // Ocultar
+          });
+          ul.appendChild(li);
+        });
+
+        resultsContainer.appendChild(ul);
+        resultsContainer.style.display = "block";
+      });
+
+      // Ocultar al hacer clic fuera
+      document.addEventListener("click", function(e) {
+        if (!e.target.closest(".search-wrapper")) {
+          resultsContainer.style.display = "none";
+        }
+      });
     }
+
+    // Iniciar el proceso
+    fetchData();
+
   </script>
-
 </body>
 </html>
-
-
-
-
