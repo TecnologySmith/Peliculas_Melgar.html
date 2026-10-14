@@ -468,8 +468,22 @@
     }
 
     function closeMovie() {
-      if (history.state && history.state.slug) history.back();
+      const st = history.state;
+      if (st && st.slug && st.direct) {
+        // Se llegó directo por enlace: volver a la URL base del catálogo sin salir del sitio
+        history.replaceState(null, "", location.pathname.replace(/(\.html?)\/.*$/i, "$1"));
+        hideModal();
+      } else if (st && st.slug) history.back();
       else hideModal();
+    }
+
+    // Si se entró por #slug (viene de 404.html), muestra la URL completa de link_unico
+    function cleanUrl(m) {
+      try {
+        const u = new URL(m.linkUnico, location.href);
+        if (m.linkUnico && u.origin === location.origin) history.replaceState({ slug: m.slug, direct: true }, "", u.href);
+        else history.replaceState({ slug: m.slug, direct: true }, "", location.href);
+      } catch (e) {}
     }
 
     function routeFromUrl() {
@@ -477,7 +491,7 @@
       const last = decodeURIComponent(location.pathname.replace(/\/+$/, "").split("/").pop() || "").replace(/\.html?$/i, "");
       const slug = hash || last;
       const m = allMoviesData.find(x => x.slug === slug);
-      if (m) showModal(m); else hideModal();
+      if (m) { showModal(m); if (hash) cleanUrl(m); } else hideModal();
     }
 
     window.addEventListener("popstate", routeFromUrl);
