@@ -13,7 +13,6 @@
       --text: #ffffff;
       --hover-bg: #2a2a2a;
     }
-
     body {
       font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       background-color: var(--dark);
@@ -22,8 +21,8 @@
       padding: 0;
       text-align: center;
     }
+    body.modal-open { overflow: hidden; }
 
-    /* --- NAVEGACIÓN PROFESIONAL (Glassmorphism) --- */
     nav {
       background-color: rgba(30, 30, 30, 0.95);
       backdrop-filter: blur(10px);
@@ -37,7 +36,6 @@
       z-index: 1000;
       border-bottom: 1px solid var(--primary);
     }
-
     nav a {
       color: var(--text);
       text-decoration: none;
@@ -48,13 +46,11 @@
       transition: all 0.3s;
       border: 1px solid transparent;
     }
-
     nav a:hover {
       color: var(--primary);
       border-color: var(--primary);
       background: rgba(255, 204, 0, 0.1);
     }
-
     h1 {
       font-size: 2.5em;
       margin: 40px 0 20px;
@@ -64,7 +60,6 @@
       text-shadow: 2px 2px #000;
     }
 
-    /* --- CONTENEDOR DE TARJETAS (GRID) --- */
     #cardsContainer {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -73,7 +68,6 @@
       max-width: 1400px;
       margin: 0 auto;
     }
-
     .card {
       background-color: var(--card-bg);
       border-radius: 15px;
@@ -84,42 +78,31 @@
       height: 100%;
       transition: transform 0.3s, box-shadow 0.3s;
       border: 1px solid rgba(255, 204, 0, 0.1);
-      position: relative; /* Importante para el tooltip */
+      position: relative;
+      cursor: pointer;
     }
-
     .card:hover {
       transform: translateY(-5px);
       box-shadow: 0 10px 20px rgba(255, 204, 0, 0.2);
     }
-
-    /* --- CONTENEDOR DE IMAGEN Y TOOLTIP REINTEGRADO --- */
     .card-img-container {
       position: relative;
       width: 100%;
-      padding-top: 140%; /* Relación póster */
+      padding-top: 140%;
       overflow: hidden;
-      cursor: help; /* Indica que hay info al pasar */
     }
-
     .card-img-container img {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       object-fit: cover;
       transition: transform 0.3s ease;
     }
+    .card:hover .card-img-container img { transform: scale(1.05); }
 
-    .card:hover .card-img-container img {
-      transform: scale(1.05); /* Ligero zoom al pasar el cursor */
-    }
-
-    /* ✅ REINTEGRACIÓN DEL TOOLTIP (Descripción al hacer hover) */
     .tooltip-modern {
       position: absolute;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
       background-color: rgba(0, 0, 0, 0.9);
       color: var(--primary);
@@ -129,16 +112,15 @@
       width: 80%;
       font-size: 13px;
       text-align: center;
-      opacity: 0; /* Oculto por defecto */
+      opacity: 0;
       transition: opacity 0.4s ease-in-out;
-      pointer-events: none; /* No interfiere con el clic */
+      pointer-events: none;
       z-index: 10;
       box-shadow: 0 0 15px rgba(0,0,0,0.5);
+      max-height: 70%;
+      overflow: hidden;
     }
-
-    .card:hover .tooltip-modern {
-      opacity: 1; /* Visible al hacer hover en la tarjeta */
-    }
+    .card:hover .tooltip-modern { opacity: 1; }
 
     .card-content {
       padding: 15px;
@@ -147,24 +129,17 @@
       flex-direction: column;
       text-align: left;
     }
-
     .card h3 {
       margin: 5px 0 10px;
       color: var(--primary);
       font-size: 1.1em;
-      min-height: 2.2em; /* Reserva espacio para 2 líneas */
+      min-height: 2.2em;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
-
-    .card p {
-      font-size: 0.9em;
-      color: #bbb;
-      margin: 4px 0;
-    }
-
+    .card p { font-size: 0.9em; color: #bbb; margin: 4px 0; }
     .card strong { color: var(--text); }
 
     .ver-btn {
@@ -179,27 +154,23 @@
       transition: 0.3s;
       font-size: 0.9em;
     }
-
     .ver-btn:hover {
       background-color: #e6b800;
       box-shadow: 0 0 15px rgba(255, 204, 0, 0.7);
     }
 
-    /* --- BUSCADOR CON AUTOCOMPLETADO (Ajustado) --- */
     .search-wrapper {
       margin: 30px auto;
       max-width: 600px;
       padding: 0 20px;
-      position: relative; /* Para posicionar los resultados */
+      position: relative;
     }
-
     .search-container {
       display: flex;
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
       border-radius: 10px;
       overflow: hidden;
     }
-
     #searchInput {
       flex-grow: 1;
       padding: 15px;
@@ -208,9 +179,7 @@
       background-color: rgba(255,255,255,0.9);
       color: #000;
     }
-
     #searchInput:focus { outline: 2px solid var(--primary); }
-
     #searchButton {
       padding: 0 25px;
       border: none;
@@ -219,33 +188,25 @@
       cursor: pointer;
       transition: background 0.3s;
     }
-
     #searchButton:hover { background-color: #e6b800; }
 
-    /* ✅ ESTILOS DEL AUTOCOMPLETADO */
     #autocompleteResults {
       position: absolute;
       top: 100%;
-      left: 20px; /* Alineado con el padding de search-wrapper */
+      left: 20px;
       right: 20px;
       background-color: rgba(255, 255, 255, 0.98);
       color: #000;
       border-radius: 0 0 10px 10px;
       box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-      z-index: 1001; /* Sobre el nav si es necesario */
-      display: none; /* Oculto por defecto */
+      z-index: 1001;
+      display: none;
       max-height: 250px;
-      overflow-y: auto; /* Scroll si hay muchas sugerencias */
+      overflow-y: auto;
       border: 1px solid var(--primary);
       border-top: none;
     }
-
-    #autocompleteResults ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
+    #autocompleteResults ul { list-style: none; margin: 0; padding: 0; }
     #autocompleteResults li {
       padding: 12px 20px;
       cursor: pointer;
@@ -253,9 +214,7 @@
       border-bottom: 1px solid #ddd;
       text-align: left;
     }
-
     #autocompleteResults li:last-child { border-bottom: none; }
-
     #autocompleteResults li:hover,
     #autocompleteResults li.active {
       background-color: var(--primary);
@@ -263,13 +222,76 @@
       font-weight: bold;
     }
 
+    /* --- VENTANA DE DETALLE DE LA PELÍCULA --- */
+    #movieModal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 2000;
+    }
+    #movieModal.open { display: flex; }
+    .modal-box {
+      position: relative;
+      background: var(--card-bg);
+      border: 1px solid var(--primary);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 900px;
+      max-height: 90vh;
+      overflow-y: auto;
+      display: flex;
+      gap: 25px;
+      padding: 25px;
+      text-align: left;
+      box-shadow: 0 0 40px rgba(255, 204, 0, 0.25);
+    }
+    .modal-close {
+      position: absolute;
+      top: 10px; right: 14px;
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-size: 32px;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .modal-poster { flex: 0 0 280px; }
+    .modal-poster img {
+      width: 100%;
+      border-radius: 12px;
+      display: block;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.6);
+    }
+    .modal-info { flex: 1; min-width: 0; }
+    .modal-info h2 { margin: 0 0 8px; color: var(--primary); font-size: 1.7em; }
+    .modal-genre { color: #bbb; margin: 0 0 15px; }
+    .modal-desc { color: #ddd; line-height: 1.6; white-space: pre-line; margin: 0 0 15px; }
+    .modal-msg {
+      background: rgba(255, 204, 0, 0.1);
+      border-left: 3px solid var(--primary);
+      padding: 10px 14px;
+      border-radius: 6px;
+      margin: 0 0 20px;
+      white-space: pre-line;
+    }
+    .modal-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .modal-actions .ver-btn { margin: 0; display: inline-block; border: none; cursor: pointer; font-family: inherit; }
+    .modal-actions .btn-sec { background: transparent; color: var(--primary); border: 1px solid var(--primary); }
+    .modal-actions .btn-sec:hover { background: rgba(255, 204, 0, 0.15); }
+
     @media (max-width: 768px) {
       h1 { font-size: 1.8em; margin: 20px 0; }
       nav { gap: 8px; padding: 10px; }
       nav a { font-size: 0.8em; padding: 6px 8px; }
-      .search-container { border-radius: 10px; }
       #autocompleteResults { left: 20px; right: 20px; }
       .tooltip-modern { width: 90%; font-size: 12px; padding: 10px; }
+      .modal-box { flex-direction: column; padding: 20px; }
+      .modal-poster { flex: none; max-width: 240px; margin: 0 auto; }
     }
   </style>
 </head>
@@ -300,135 +322,230 @@
     <a href="https://wa.me/+573222117202" style="color: var(--primary); font-weight: bold; text-decoration: none;">Solicítala por WhatsApp aquí</a>
   </div>
 
+  <!-- Ventana de detalle -->
+  <div id="movieModal" aria-hidden="true">
+    <div class="modal-box" role="dialog" aria-modal="true">
+      <button class="modal-close" id="modalClose" aria-label="Cerrar">&times;</button>
+      <div class="modal-poster"><img id="mImg" src="" alt=""></div>
+      <div class="modal-info">
+        <h2 id="mTitle"></h2>
+        <p class="modal-genre" id="mGenre"></p>
+        <p class="modal-desc" id="mDesc"></p>
+        <p class="modal-msg" id="mMsg"></p>
+        <div class="modal-actions">
+          <a id="mLink" class="ver-btn" href="#" target="_blank" rel="noopener">🎬 Ver en Terabox</a>
+          <button id="mCopy" class="ver-btn btn-sec" type="button">🔗 Copiar enlace</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     const url = "https://docs.google.com/spreadsheets/d/1wXvXslnUlQPLhmbiLTQ4X2G2JeaPmN648p1ng9125KM/gviz/tq?tqx=out:json";
-    let allMoviesData = []; // Variable global para guardar los datos
+    const BASE_TITLE = document.title;
+    const FALLBACK_IMG = "https://via.placeholder.com/300x450?text=No+Image";
+    let allMoviesData = [];
 
-    // 1. Cargar Datos Iniciales
+    // ---------- Utilidades ----------
+    function slugify(s) {
+      return s.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+    }
+    // Extrae el último tramo de link_unico (ej: ".../rehen-2025" -> "rehen-2025")
+    function slugFromLink(link, nombre) {
+      const clean = (link || "").toString().trim().split("#").pop().split("?")[0].replace(/\/+$/, "");
+      const last = clean.split("/").pop().replace(/\.html?$/i, "");
+      return slugify(last || nombre);
+    }
+
+    // ---------- 1. Cargar datos ----------
     async function fetchData() {
       try {
         const res = await fetch(url);
         const text = await res.text();
         const json = JSON.parse(text.substr(47).slice(0, -2));
-        const rows = json.table.rows.reverse(); // Últimas agregadas primero
+
+        // Detectar la columna link_unico por su encabezado (o 7 como respaldo)
+        const labels = json.table.cols.map(c => (c.label || "").trim().toLowerCase());
+        let idxLink = labels.indexOf("link_unico");
+        let rows = json.table.rows;
+        if (idxLink === -1 && rows.length) {
+          idxLink = rows[0].c.findIndex(c => c && (c.v || "").toString().trim().toLowerCase() === "link_unico");
+          if (idxLink !== -1) rows = rows.slice(1); // la primera fila era el encabezado
+        }
+        if (idxLink === -1) idxLink = 7;
+        rows = rows.slice().reverse(); // Últimas agregadas primero
 
         const container = document.getElementById("cardsContainer");
         container.innerHTML = "";
 
         rows.forEach(row => {
           const nombre = row.c[0]?.v || "";
-          const enlace = row.c[6]?.v || "";
           const genero = row.c[2]?.v || "";
           const imagen = row.c[3]?.v || "";
+          const info = row.c[4]?.v || "";
           const mensaje = row.c[5]?.v || "";
-          const info = row.c[4]?.v || "Ver detalles..."; // Columna de descripción
+          const enlace = row.c[6]?.v || "";
+          const linkUnico = row.c[idxLink]?.v || "";
 
           if (!nombre || !enlace) return;
 
-          // Guardamos en la variable global para el autocompletado
-          allMoviesData.push({ nombre: nombre.toString(), genero: genero.toString() });
+          const movie = {
+            nombre: nombre.toString(), genero: genero.toString(), imagen, info: info.toString(),
+            mensaje: mensaje.toString(), enlace, linkUnico: linkUnico.toString().trim(),
+            slug: slugFromLink(linkUnico, nombre)
+          };
+          allMoviesData.push(movie);
 
           const card = document.createElement("div");
           card.className = "card";
           card.innerHTML = `
             <div class="card-img-container">
-                <img src="${imagen}" alt="${nombre}" onerror="this.src='https://via.placeholder.com/300x450?text=No+Image'">
-                <div class="tooltip-modern"><strong>Info:</strong><br>${info}</div>
+                <img src="${imagen}" alt="${nombre}" onerror="this.src='${FALLBACK_IMG}'">
+                <div class="tooltip-modern"><strong>Info:</strong><br>${info || "Ver detalles..."}</div>
             </div>
             <div class="card-content">
                 <h3>${nombre}</h3>
                 <p><strong>🎭 Género:</strong> ${genero}</p>
                 <p><strong>📢</strong> ${mensaje}</p>
             </div>
-            <a href="${enlace}" class="ver-btn" target="_blank">🎬 Ver Película</a>
+            <a href="${movie.linkUnico || '#' + movie.slug}" class="ver-btn">🎬 Ver Película</a>
           `;
+          card.addEventListener("click", e => { e.preventDefault(); openMovie(movie, true); });
           container.appendChild(card);
         });
 
-        setupAutocomplete(); // Iniciar autocompletado después de cargar datos
-
+        setupAutocomplete();
+        routeFromUrl(); // Si la URL ya trae una película (ej: /rehen-2025), se abre sola
       } catch (err) {
         console.error("Error al cargar datos:", err);
         document.getElementById("cardsContainer").innerHTML = "<h3>❌ Error al cargar el catálogo. Intente más tarde.</h3>";
       }
     }
 
-    // 2. Función Principal de Filtrado (Mejorada para ocultar autocompletado)
+    // ---------- 2. Ventana de detalle + URL (link_unico) ----------
+    const modal = document.getElementById("movieModal");
+    let currentMovie = null;
+
+    function showModal(m) {
+      currentMovie = m;
+      document.getElementById("mImg").src = m.imagen || FALLBACK_IMG;
+      document.getElementById("mImg").alt = m.nombre;
+      document.getElementById("mTitle").textContent = m.nombre;
+      document.getElementById("mGenre").textContent = m.genero ? "🎭 " + m.genero : "";
+      document.getElementById("mDesc").textContent = m.info || "Sin descripción disponible.";
+      const msg = document.getElementById("mMsg");
+      msg.textContent = m.mensaje ? "📢 " + m.mensaje : "";
+      msg.style.display = m.mensaje ? "block" : "none";
+      document.getElementById("mLink").href = m.enlace;
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("modal-open");
+      document.title = m.nombre + " | Películas Melgar";
+    }
+
+    function hideModal() {
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("modal-open");
+      document.title = BASE_TITLE;
+      currentMovie = null;
+    }
+
+    function openMovie(m, push) {
+      showModal(m);
+      if (!push) return;
+      // Cambia la URL del navegador a la de link_unico
+      try {
+        const u = new URL(m.linkUnico || ("#" + m.slug), location.href);
+        if (u.origin === location.origin) {
+          history.pushState({ slug: m.slug }, "", u.href);
+          return;
+        }
+      } catch (e) {}
+      // Si link_unico es de otro dominio (o se abre como archivo local), usa #slug
+      history.pushState({ slug: m.slug }, "", "#" + m.slug);
+    }
+
+    function closeMovie() {
+      if (history.state && history.state.slug) history.back();
+      else hideModal();
+    }
+
+    function routeFromUrl() {
+      const hash = decodeURIComponent(location.hash.slice(1));
+      const last = decodeURIComponent(location.pathname.replace(/\/+$/, "").split("/").pop() || "").replace(/\.html?$/i, "");
+      const slug = hash || last;
+      const m = allMoviesData.find(x => x.slug === slug);
+      if (m) showModal(m); else hideModal();
+    }
+
+    window.addEventListener("popstate", routeFromUrl);
+    document.getElementById("modalClose").addEventListener("click", closeMovie);
+    modal.addEventListener("click", e => { if (e.target === modal) closeMovie(); });
+    document.addEventListener("keydown", e => { if (e.key === "Escape" && currentMovie) closeMovie(); });
+    document.getElementById("mCopy").addEventListener("click", function () {
+      const link = location.href;
+      (navigator.clipboard ? navigator.clipboard.writeText(link) : Promise.reject())
+        .then(() => { this.textContent = "✅ Enlace copiado"; })
+        .catch(() => { prompt("Copia este enlace:", link); });
+      setTimeout(() => { this.textContent = "🔗 Copiar enlace"; }, 2000);
+    });
+
+    // ---------- 3. Filtrado ----------
     function filterCards(searchTerm = null) {
-      const input = searchTerm || document.getElementById("searchInput").value.toLowerCase();
+      const input = (searchTerm || document.getElementById("searchInput").value).toLowerCase();
       const cards = document.querySelectorAll(".card");
       let matches = 0;
-
       cards.forEach(card => {
-        // Buscamos solo en el H3 (título) y P (género) para más precisión
-        const title = card.querySelector('h3').innerText.toLowerCase();
-        const genre = card.querySelector('p').innerText.toLowerCase();
+        const title = card.querySelector("h3").innerText.toLowerCase();
+        const genre = card.querySelector("p").innerText.toLowerCase();
         const isMatch = title.includes(input) || genre.includes(input);
-
         card.style.display = isMatch ? "flex" : "none";
         if (isMatch) matches++;
       });
-
       document.getElementById("noResultsMessage").style.display = matches === 0 ? "block" : "none";
-      document.getElementById("autocompleteResults").style.display = "none"; // Ocultar sugerencias
+      document.getElementById("autocompleteResults").style.display = "none";
     }
 
-    // ✅ 3. Lógica del Sistema de Autocompletado
+    // ---------- 4. Autocompletado ----------
     function setupAutocomplete() {
       const searchInput = document.getElementById("searchInput");
       const resultsContainer = document.getElementById("autocompleteResults");
 
-      searchInput.addEventListener("input", function() {
+      searchInput.addEventListener("input", function () {
         const value = this.value.toLowerCase().trim();
-        resultsContainer.innerHTML = ""; // Limpiar resultados previos
+        resultsContainer.innerHTML = "";
+        if (value.length < 2) { resultsContainer.style.display = "none"; return; }
 
-        if (value.length < 2) {
-          resultsContainer.style.display = "none";
-          return;
-        }
-
-        // Filtrar solo nombres que coincidan
         const suggestions = allMoviesData
           .filter(movie => movie.nombre.toLowerCase().includes(value))
-          .slice(0, 10); // Limitar a 10 sugerencias para rendimiento
+          .slice(0, 10);
+        if (suggestions.length === 0) { resultsContainer.style.display = "none"; return; }
 
-        if (suggestions.length === 0) {
-          resultsContainer.style.display = "none";
-          return;
-        }
-
+        const safe = value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
         const ul = document.createElement("ul");
         suggestions.forEach(suggestion => {
           const li = document.createElement("li");
-          // Resaltar la parte que coincide
-          const regex = new RegExp(`(${value})`, 'gi');
-          const highlightedName = suggestion.nombre.replace(regex, "<strong>$1</strong>");
-          
+          const highlightedName = suggestion.nombre.replace(new RegExp(`(${safe})`, "gi"), "<strong>$1</strong>");
           li.innerHTML = `🎬 ${highlightedName}`;
-          
-          li.addEventListener("click", function() {
-            searchInput.value = suggestion.nombre; // Llenar buscador
-            filterCards(suggestion.nombre.toLowerCase()); // Filtrar directamente
-            resultsContainer.style.display = "none"; // Ocultar
+          li.addEventListener("click", function () {
+            searchInput.value = suggestion.nombre;
+            filterCards(suggestion.nombre.toLowerCase());
+            resultsContainer.style.display = "none";
           });
           ul.appendChild(li);
         });
-
         resultsContainer.appendChild(ul);
         resultsContainer.style.display = "block";
       });
 
-      // Ocultar al hacer clic fuera
-      document.addEventListener("click", function(e) {
-        if (!e.target.closest(".search-wrapper")) {
-          resultsContainer.style.display = "none";
-        }
+      document.addEventListener("click", function (e) {
+        if (!e.target.closest(".search-wrapper")) resultsContainer.style.display = "none";
       });
     }
 
-    // Iniciar el proceso
     fetchData();
-
   </script>
 </body>
 </html>
